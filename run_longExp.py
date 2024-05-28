@@ -91,6 +91,9 @@ parser.add_argument('--use_multi_gpu', action='store_true', help='use multiple g
 parser.add_argument('--devices', type=str, default='0,1,2,3', help='device ids of multile gpus')
 parser.add_argument('--test_flop', action='store_true', default=False, help='See utils/tools for usage')
 
+#GOLD_PRICE
+parser.add_argument('--target', type=str, default='Value (USD per troy ounce)', help='target feature name')
+
 args = parser.parse_args()
 
 # random seed
@@ -169,3 +172,7 @@ else:
     print('>>>>>>>testing : {}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<'.format(setting))
     exp.test(setting, test=1)
     torch.cuda.empty_cache()
+
+
+# In run_longExp.py or wherever you initialize the experiment
+args.target = 'Value (USD per troy ounce)'

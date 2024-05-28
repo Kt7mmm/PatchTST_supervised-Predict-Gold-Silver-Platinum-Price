@@ -1,18 +1,21 @@
 #!/bin/bash
 
-# Kiểm tra và tạo thư mục logs nếu chưa tồn tại
+# Create the logs directory if it doesn't exist
 mkdir -p ./logs/LongForecasting
 
-# Thiết lập các biến cần thiết
+# Set necessary variables
 seq_len=104
 model_name=PatchTST
 root_path_name=./dataset/
-data_path_name=gold_price.csv
+data_path_name=gold_price_2018_2024.csv
 model_id_name=gold_price
 data_name=custom
 random_seed=2021
 
-# Vòng lặp cho các giá trị pred_len khác nhau
+# Target column name
+target_name='Value (USD per troy ounce)'
+
+# Loop for different prediction lengths
 for pred_len in 24 36 48 60
 do
     python -u run_longExp.py \
@@ -37,8 +40,9 @@ do
       --patch_len 24 \
       --stride 2 \
       --des 'Exp' \
-      --train_epochs 5 \
+      --train_epochs 100 \
       --batch_size 16 \
       --learning_rate 0.0025 \
+      --target $target_name \  # Pass the target column name
       --itr 1 > logs/LongForecasting/${model_name}_${model_id_name}_${seq_len}_${pred_len}.log
 done
